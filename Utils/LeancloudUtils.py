@@ -43,7 +43,7 @@ def save_to_leancloud(routeDatas):
                    app_key='d9jubbw9fokmav8j0vqyxaccz8yokmyisk98orsnnu3o8kd4')
     GeneratedData = leancloud.Object.extend('GeneratedData')
     gd = GeneratedData()
-    gd.set('timestamp', time.time() * 1000)
+    gd.set('timestamp', int(time.time() * 1000))
     gd.set('senz_data', routeDatas)
     gd.save()
 
