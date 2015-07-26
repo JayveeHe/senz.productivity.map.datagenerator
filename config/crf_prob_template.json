@@ -1,0 +1,604 @@
+{
+  "travel_in_scenic": {
+    "sound": {
+      "shop": 0.2,
+      "busy_street": 0.2,
+      "quiet_street": 0.1,
+      "unknow": 0.1,
+      "walk": 0.1,
+      "forrest": 0.3
+    },
+    "motion": {
+      "riding": 0.1,
+      "running": 0.1,
+      "walking": 0.3,
+      "driving": 0.3,
+      "sitting": 0.2
+    },
+    "location": {
+      "economy_hotel": 0.01,
+      "outdoor": 0.1,
+      "coffee": 0.01,
+      "travel_agency": 0.01,
+      "snack_bar": 0.01,
+      "Others": 0.1,
+      "hostel": 0.05,
+      "scenic_spot": 0.2,
+      "museum": 0.05,
+      "emergency_center": 0.01,
+      "drugstore": 0.01,
+      "jewelry_store": 0.01,
+      "parking_plot": 0.02,
+      "gas_station": 0.01,
+      "toll_station": 0.01,
+      "dessert": 0.01,
+      "muslim": 0.01,
+      "traffic": 0.2,
+      "gallery": 0.01,
+      "bank": 0.01,
+      "bar": 0.01,
+      "cooler": 0.01,
+      "residence": 0.1,
+      "atm": 0.01,
+      "cigarette_store": 0.01,
+      "motel": 0.01
+    },
+    "time": {
+      "noon": 0.15,
+      "evening": 0.25,
+      "afternoon": 0.35,
+      "morning": 0.25
+    },
+    "speed": {
+      "still": 0.1,
+      "mid_speed": 0.55,
+      "high_speed": 0.05,
+      "low_speed": 0.3
+    },
+    "day": {
+      "weekend": 0.6,
+      "weekday": 0.4
+    }
+  },
+  "emergency": {
+    "sound": {
+      "busy_street": 0.5,
+      "in_bus": 0.3,
+      "subway": 0.2
+    },
+    "motion": {
+      "running": 0.5,
+      "walking": 0.2,
+      "driving": 0.2,
+      "sitting": 0.1
+    },
+    "location": {
+      "emergency_center": 0.2,
+      "hospital": 0.2,
+      "traffic": 0.3,
+      "residence": 0.1,
+      "drugstore": 0.1,
+      "salvage_station": 0.1
+    },
+    "time": {
+      "evening": 0.2,
+      "early_morning": 0.15,
+      "noon": 0.15,
+      "late_night": 0.15,
+      "morning": 0.15,
+      "afternoon": 0.2
+    },
+    "speed": {
+      "still": 0.2,
+      "mid_speed": 0.35,
+      "high_speed": 0.15,
+      "low_speed": 0.3
+    },
+    "day": {
+      "weekend": 0.5,
+      "weekday": 0.5
+    }
+  },
+  "go_home": {
+    "sound": {
+      "busy_street": 0.3,
+      "quiet_street": 0.1,
+      "in_bus": 0.2,
+      "walk": 0.1,
+      "bus_stop": 0.1,
+      "subway": 0.2
+    },
+    "motion": {
+      "riding": 0.1,
+      "running": 0.1,
+      "walking": 0.3,
+      "driving": 0.3,
+      "sitting": 0.2
+    },
+    "location": {
+      "coffee": 0.05,
+      "outdoor": 0.1,
+      "gas_station": 0.05,
+      "toll_station": 0.01,
+      "residence": 0.1,
+      "university": 0.01,
+      "parking_plot": 0.1,
+      "newstand": 0.05,
+      "convenience_store": 0.04,
+      "primary_school": 0.01,
+      "traffic": 0.26,
+      "cigarette_store": 0.01,
+      "Others": 0.1,
+      "home": 0.05,
+      "post_office": 0.01,
+      "motorcycle": 0.05
+    },
+    "time": {
+      "noon": 0.05,
+      "evening": 0.85,
+      "afternoon": 0.05,
+      "morning": 0.05
+    },
+    "speed": {
+      "mid_speed": 0.55,
+      "high_speed": 0.25,
+      "low_speed": 0.2
+    },
+    "day": {
+      "weekend": 0.3,
+      "weekday": 0.7
+    }
+  },
+  "work_in_office": {
+    "sound": {
+      "study_quite_office": 0.7,
+      "living_room": 0.2,
+      "walk": 0.1
+    },
+    "motion": {
+      "walking": 0.1,
+      "sitting": 0.9
+    },
+    "location": {
+      "adult_education": 0.05,
+      "telecom_offices": 0.05,
+      "ticket_agent": 0.01,
+      "electricity_office": 0.05,
+      "technical_school": 0.03,
+      "training_institutions": 0.01,
+      "university": 0.1,
+      "hotel": 0.01,
+      "library": 0.01,
+      "travel_agency": 0.01,
+      "insurance_company": 0.02,
+      "primary_school": 0.01,
+      "business_building": 0.2,
+      "work_office": 0.36,
+      "post_office": 0.01,
+      "science_museum": 0.01,
+      "high_school": 0.01,
+      "museum": 0.01,
+      "bank": 0.03,
+      "water_supply_office": 0.01
+    },
+    "time": {
+      "evening": 0.2,
+      "early_morning": 0.15,
+      "noon": 0.15,
+      "late_night": 0.15,
+      "morning": 0.15,
+      "afternoon": 0.2
+    },
+    "speed": {
+      "still": 0.8,
+      "low_speed": 0.2
+    },
+    "day": {
+      "weekend": 0.1,
+      "weekday": 0.9
+    }
+  },
+  "go_to_class": {
+    "sound": {
+      "classroom": 0.8,
+      "unknow": 0.1,
+      "walk": 0.1
+    },
+    "motion": {
+      "walking": 0.1,
+      "sitting": 0.9
+    },
+    "location": {
+      "adult_education": 0.1,
+      "technical_school": 0.3,
+      "emergency_center": 0.01,
+      "university": 0.23,
+      "kinder_garten": 0.01,
+      "library": 0.05,
+      "primary_school": 0.05,
+      "training_institutions": 0.05,
+      "high_school": 0.1,
+      "museum": 0.05,
+      "science_museum": 0.05
+    },
+    "time": {
+      "noon": 0.1,
+      "afternoon": 0.35,
+      "morning": 0.55
+    },
+    "speed": {
+      "mid_speed": 0.35,
+      "high_speed": 0.05,
+      "low_speed": 0.6
+    },
+    "day": {
+      "weekend": 0.1,
+      "weekday": 0.9
+    }
+  },
+  "go_for_concert": {
+    "sound": {"Others": 1},
+    "motion": {
+      "walking": 0.1,
+      "sitting": 0.9
+    },
+    "location": {
+      "ticket_agent": 0.05,
+      "night_club": 0.05,
+      "exhibition_hall": 0.2,
+      "odeum": 0.2,
+      "university": 0.1,
+      "scenic_spot": 0.05,
+      "motel": 0.05,
+      "outdoor": 0.05,
+      "bar": 0.05,
+      "gallery": 0.2
+    },
+    "time": {
+      "noon": 0.05,
+      "evening": 0.85,
+      "afternoon": 0.05,
+      "morning": 0.05
+    },
+    "speed": {
+      "mid_speed": 0.45,
+      "high_speed": 0.35,
+      "low_speed": 0.2
+    },
+    "day": {
+      "weekend": 0.8,
+      "weekday": 0.2
+    }
+  },
+  "dining_in_restaurant": {
+    "sound": {
+      "shop": 0.2,
+      "kitchen": 0.4,
+      "living_room": 0.1,
+      "walk": 0.3
+    },
+    "motion": {
+      "walking": 0.2,
+      "sitting": 0.8
+    },
+    "location": {
+      "coffee": 0.04,
+      "chafing_dish": 0.05,
+      "bar": 0.01,
+      "dessert": 0.03,
+      "seafood": 0.05,
+      "muslim": 0.05,
+      "buffet": 0.1,
+      "hotel": 0.01,
+      "vegetarian_diet": 0.05,
+      "chinese_restaurant": 0.2,
+      "bbq": 0.1,
+      "scenic_spot": 0.01,
+      "hostel": 0.01,
+      "western_restaurant": 0.2,
+      "japan_korea_restaurant": 0.1
+    },
+    "time": {
+      "noon": 0.45,
+      "evening": 0.45,
+      "afternoon": 0.05,
+      "morning": 0.05
+    },
+    "speed": {
+      "still": 0.35,
+      "low_speed": 0.65
+    },
+    "day": {
+      "weekend": 0.5,
+      "weekday": 0.5
+    }
+  },
+  "exercise_outdoor": {
+    "sound": {
+      "busy_street": 0.5,
+      "quiet_street": 0.2,
+      "walk": 0.3
+    },
+    "motion": {
+      "riding": 0.2,
+      "running": 0.4,
+      "walking": 0.3,
+      "sitting": 0.1
+    },
+    "location": {
+      "cooler": 0.01,
+      "dessert": 0.01,
+      "university": 0.1,
+      "outdoor": 0.58,
+      "traffic": 0.3
+    },
+    "time": {
+      "noon": 0.05,
+      "afternoon": 0.15,
+      "evening": 0.4,
+      "early_morning": 0.25,
+      "morning": 0.15
+    },
+    "speed": {
+      "still": 0.3,
+      "mid_speed": 0.2,
+      "low_speed": 0.5
+    },
+    "day": {
+      "weekend": 0.7,
+      "weekday": 0.3
+    }
+  },
+  "movie_in_cinema": {
+    "sound": {"Others": 1},
+    "motion": {
+      "walking": 0.1,
+      "sitting": 0.9
+    },
+    "location": {
+      "Others": 0.1,
+      "cinema": 0.9
+    },
+    "time": {
+      "noon": 0.02,
+      "evening": 0.8,
+      "afternoon": 0.15,
+      "morning": 0.03
+    },
+    "speed": {
+      "still": 0.75,
+      "low_speed": 0.25
+    },
+    "day": {
+      "weekend": 0.65,
+      "weekday": 0.35
+    }
+  },
+  "go_for_exhibition": {
+    "sound": {
+      "study_quite_office": 0.1,
+      "hallway": 0.3,
+      "living_room": 0.3,
+      "walk": 0.3
+    },
+    "motion": {
+      "walking": 0.7,
+      "sitting": 0.3
+    },
+    "location": {
+      "university": 0.1,
+      "museum": 0.3,
+      "muslim": 0.1,
+      "exhibition_hall": 0.3,
+      "gallery": 0.2
+    },
+    "time": {
+      "noon": 0.1,
+      "evening": 0.2,
+      "afternoon": 0.35,
+      "morning": 0.35
+    },
+    "speed": {
+      "still": 0.4,
+      "mid_speed": 0.1,
+      "low_speed": 0.5
+    },
+    "day": {
+      "weekend": 0.75,
+      "weekday": 0.25
+    }
+  },
+  "exercise_indoor": {
+    "sound": {
+      "living_room": 0.8,
+      "walk": 0.2
+    },
+    "motion": {
+      "running": 0.1,
+      "walking": 0.2,
+      "sitting": 0.7
+    },
+    "location": {
+      "home": 0.5,
+      "residence": 0.5
+    },
+    "time": {
+      "noon": 0.05,
+      "evening": 0.55,
+      "afternoon": 0.35,
+      "morning": 0.05
+    },
+    "speed": {
+      "still": 0.65,
+      "mid_speed": 0.05,
+      "low_speed": 0.3
+    },
+    "day": {
+      "weekend": 0.6,
+      "weekday": 0.4
+    }
+  },
+  "shopping_in_mall": {
+    "sound": {
+      "shop": 0.2,
+      "busy_street": 0.2,
+      "quiet_street": 0.2,
+      "walk": 0.4
+    },
+    "motion": {
+      "walking": 0.8,
+      "sitting": 0.2
+    },
+    "location": {
+      "gift_store": 0.05,
+      "parking_plot": 0.02,
+      "photography_store": 0.02,
+      "pawnshop": 0.01,
+      "pet_market": 0.05,
+      "digital_store": 0.2,
+      "jewelry_store": 0.1,
+      "coffee": 0.05,
+      "sports_store": 0.01,
+      "dessert": 0.1,
+      "supermarket": 0.05,
+      "cosmetics_store": 0.1,
+      "antique_store": 0.01,
+      "comprehensive_market": 0.1,
+      "video_store": 0.1,
+      "commodity_market": 0.01,
+      "cooler": 0.02,
+      "ktv": 0.01,
+      "atm": 0.01,
+      "cigarette_store": 0.1,
+      "clothing_store": 0.3,
+      "mother_store": 0.02,
+      "furniture_store": 0.02
+    },
+    "time": {
+      "noon": 0.05,
+      "evening": 0.45,
+      "afternoon": 0.35,
+      "morning": 0.15
+    },
+    "speed": {
+      "still": 0.4,
+      "mid_speed": 0.05,
+      "low_speed": 0.55
+    },
+    "day": {
+      "weekend": 0.75,
+      "weekday": 0.25
+    }
+  },
+  "go_for_outing": {
+    "sound": {
+      "shop": 0.1,
+      "busy_street": 0.2,
+      "quiet_street": 0.1,
+      "walk": 0.1,
+      "bus_stop": 0.1,
+      "forrest": 0.4
+    },
+    "motion": {
+      "riding": 0.1,
+      "running": 0.1,
+      "walking": 0.2,
+      "driving": 0.4,
+      "sitting": 0.2
+    },
+    "location": {
+      "economy_hotel": 0.01,
+      "outdoor": 0.05,
+      "coffee": 0.01,
+      "travel_agency": 0.01,
+      "snack_bar": 0.01,
+      "Others": 0.2,
+      "hostel": 0.05,
+      "scenic_spot": 0.2,
+      "museum": 0.05,
+      "resort": 0.05,
+      "emergency_center": 0.01,
+      "drugstore": 0.01,
+      "jewelry_store": 0.01,
+      "parking_plot": 0.02,
+      "gas_station": 0.01,
+      "toll_station": 0.01,
+      "dessert": 0.01,
+      "muslim": 0.01,
+      "traffic": 0.3,
+      "gallery": 0.01,
+      "bank": 0.01,
+      "bar": 0.01,
+      "cooler": 0.01,
+      "residence": 0.1,
+      "atm": 0.01,
+      "cigarette_store": 0.01,
+      "motel": 0.01
+    },
+    "time": {
+      "evening": 0.5,
+      "afternoon": 0.4,
+      "morning": 0.1
+    },
+    "speed": {
+      "still": 0.2,
+      "mid_speed": 0.35,
+      "high_speed": 0.15,
+      "low_speed": 0.3
+    },
+    "day": {
+      "weekend": 0.75,
+      "weekday": 0.25
+    }
+  },
+  "go_work": {
+    "sound": {
+      "busy_street": 0.3,
+      "quiet_street": 0.1,
+      "in_bus": 0.2,
+      "walk": 0.1,
+      "bus_stop": 0.1,
+      "subway": 0.2
+    },
+    "motion": {
+      "riding": 0.1,
+      "running": 0.1,
+      "walking": 0.3,
+      "driving": 0.3,
+      "sitting": 0.2
+    },
+    "location": {
+      "coffee": 0.05,
+      "outdoor": 0.1,
+      "gas_station": 0.05,
+      "toll_station": 0.01,
+      "residence": 0.1,
+      "university": 0.01,
+      "parking_plot": 0.1,
+      "newstand": 0.05,
+      "convenience_store": 0.04,
+      "primary_school": 0.01,
+      "traffic": 0.26,
+      "cigarette_store": 0.01,
+      "Others": 0.1,
+      "home": 0.05,
+      "post_office": 0.01,
+      "motorcycle": 0.05
+    },
+    "time": {
+      "noon": 0.1,
+      "afternoon": 0.15,
+      "early_morning": 0.15,
+      "morning": 0.6
+    },
+    "speed": {
+      "mid_speed": 0.55,
+      "high_speed": 0.25,
+      "low_speed": 0.2
+    },
+    "day": {
+      "weekend": 0.1,
+      "weekday": 0.9
+    }
+  }
+}

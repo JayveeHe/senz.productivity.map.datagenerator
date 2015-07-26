@@ -1,0 +1,14 @@
+{
+  "redis": {
+    "address": "182.92.184.146",
+    "port": 6379
+  },
+  "leancloud": {
+    "LEANCLOUD_APP_ID": "i13osrwxayxnaqsd3v0ikmqc0b1vndjnrgp6bp00p8iae6zc",
+    "LEANCLOUD_APP_KEY": "d9jubbw9fokmav8j0vqyxaccz8yokmyisk98orsnnu3o8kd4",
+    "LEANCLOUD_APP_MASTER_KEY": "1v7y9mkdx4olwqz5ml2uz7jaliaqhiuf5ggoqrn6aqbxohnp",
+    "APP_ENV": "test",
+    "APP_PORT": 9529,
+    "LOG_TAG": "senz.productivity.map.datagenerator"
+  }
+}
