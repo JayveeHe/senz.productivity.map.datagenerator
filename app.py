@@ -1,6 +1,6 @@
 import json
 import os
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, make_response
 import math
 import sys
 from Utils import POI_tagger, LeancloudUtils, DataGenerator
@@ -18,7 +18,7 @@ def handle_data():
     routeDatas = req_data['routeDatas']
     isSaved = req_data['isSaved']
     req_count = len(routeDatas)
-    print 'req_count =', routeDatas
+    print 'req_count =', req_count
     i = 0
     j = 0
     for gps_point in routeDatas:
@@ -31,9 +31,10 @@ def handle_data():
             # print j
         i += 1
     # print 'done'
+    objid = 'null'
     if isSaved:
-        LeancloudUtils.save_to_leancloud(result)
-    return json.dumps(result)
+        objid = LeancloudUtils.save_to_leancloud(result)
+    return json.dumps({'trace_id': objid, 'result': result})
 
 
 @app.route('/context', methods=['GET'])
@@ -44,6 +45,33 @@ def get_context_menu():
 @app.route('/feature', methods=['GET'])
 def get_newfeature():
     return json.dumps(LeancloudUtils.get_crf_newfeature())
+
+
+@app.route('/trace-ids', methods=['POST'])
+def get_recentlist():
+    req_data = json.loads(request.data)
+    limit = req_data.get('limit')
+    if limit:
+        query_result = LeancloudUtils.get_recent_tracelist(limit)
+    else:
+        query_result = LeancloudUtils.get_recent_tracelist()
+    ids = []
+    for item in query_result:
+        ids.append(item.id)
+    return json.dumps(ids)
+
+
+@app.route('/trace', methods=['POST'])
+def get_single_trace():
+    req_data = json.loads(request.data)
+    trace_id = req_data['trace_id']
+    query_result = LeancloudUtils.get_trace_by_id(trace_id)
+    if query_result:
+        trace = query_result[0].attributes['senz_data']
+        return json.dumps(trace)
+    else:
+        resp = make_response(json.dumps({"code": 1, 'msg': 'trace_id not matched!'}), 400)
+        return resp
 
 
 @app.route('/', methods=['GET'])

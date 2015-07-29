@@ -42,6 +42,7 @@ var init_feature = function () {
 };
 init_context();
 init_feature();
+get_recent_traceid();
 
 // generate point mode init
 var isPoint = false;
@@ -142,6 +143,10 @@ $("#btn_reset").click(function () {
 
 $("#btn_getdata").click(function () {
     getRouteData(mapResult);
+});
+
+$("#btn_gettrace").click(function () {
+    click_btn_gettrace();
 });
 
 // operations part
@@ -245,6 +250,63 @@ var makeWalkingRoute = function (renderMap) {
 };
 
 //data collector
+//draw points
+function drawpoints(result) {
+    function openInfo(content, e) {
+        var p = e.target;
+        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+        var opts = {
+            width: 250,     // 信息窗口宽度
+            height: 400,     // 信息窗口高度
+            title: "信息窗口", // 信息窗口标题
+            enableMessage: true//设置允许信息窗发送短息
+        };
+        var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象
+        map.openInfoWindow(infoWindow, point); //开启信息窗口
+    }
+
+    function addClickHandler(content, marker) {
+        marker.addEventListener("click", function (e) {
+                openInfo(content, e)
+            }
+        );
+    }
+
+    new_points = result;
+    //console.log("point=" + new_points);
+    //console.log(new_points);
+    var t_point_list = [];
+    for (var i = 0; i < new_points.length; i++) {
+        var t_point = new BMap.Point(new_points[i].lng, new_points[i].lat);
+        t_point_list.push(t_point);
+        var t_marker = new BMap.Marker(t_point);
+        var poi_text = "GPS:<br>lng=" + new_points[i].lng + "<br>lat=" + new_points[i].lat + "<br>";
+        poi_text += '<br>Context:' + new_points[i].context + '<br>';
+        poi_text += 'Location:' + new_points[i].location + '<br>';
+        poi_text += 'Sound:' + new_points[i].sound + '<br>';
+        poi_text += 'Motion:' + new_points[i].motion + '<br>';
+        poi_text += 'Speed:' + new_points[i].speed + '<br>';
+        poi_text += 'Time:' + new_points[i].time + '<br>';
+        poi_text += 'Day:' + new_points[i].day + '<br>';
+        poi_text += '<br>RealPOIs:<br>';
+        for (var j = 0; j < new_points[i].poi_types.length; j++) {
+            poi_text += new_points[i].poi_types[j].title + ":" + new_points[i].poi_types[j].mapping_type + "<br>";
+        }
+        //console.log(poi_text);
+        addClickHandler(poi_text, t_marker);
+        map.addOverlay(t_marker);
+    }
+    var polyline = new BMap.Polyline(t_point_list, {
+        strokeColor: "blue",
+        strokeWeight: 3,
+        strokeOpacity: 1
+    });   //创建折线
+    map.addOverlay(polyline);   //增加折线
+    alert("ok");
+    map.centerAndZoom(new BMap.Point(t_point_list[0].lng,t_point_list[0].lat), 12);
+}
+
+
 var postRouteData = function (routeDatas) {
     console.log('isSaved=' + $("#isSaved")[0].checked);
     $.ajax({
@@ -256,58 +318,12 @@ var postRouteData = function (routeDatas) {
             type: "POST",
             contentType: "application/json",
             success: function (result) {
-                function openInfo(content, e) {
-                    var p = e.target;
-                    var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-                    var opts = {
-                        width: 250,     // 信息窗口宽度
-                        height: 400,     // 信息窗口高度
-                        title: "信息窗口", // 信息窗口标题
-                        enableMessage: true//设置允许信息窗发送短息
-                    };
-                    var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象
-                    map.openInfoWindow(infoWindow, point); //开启信息窗口
+                var jsonroot = JSON.parse(result);
+                drawpoints(jsonroot.result);
+                if ($("#isSaved")[0].checked) {
+                    alert('trace_id=' + jsonroot.trace_id);
+                    get_recent_traceid();
                 }
-
-                function addClickHandler(content, marker) {
-                    marker.addEventListener("click", function (e) {
-                            openInfo(content, e)
-                        }
-                    );
-                }
-
-                new_points = JSON.parse(result);
-                //console.log("point=" + new_points);
-                //console.log(new_points);
-                var t_point_list = [];
-                for (var i = 0; i < new_points.length; i++) {
-                    var t_point = new BMap.Point(new_points[i].lng, new_points[i].lat);
-                    t_point_list.push(t_point);
-                    var t_marker = new BMap.Marker(t_point);
-                    var poi_text = "GPS:<br>lng=" + new_points[i].lng + "<br>lat=" + new_points[i].lat + "<br>";
-                    poi_text += '<br>Context:' + new_points[i].context + '<br>';
-                    poi_text += 'Location:' + new_points[i].location + '<br>';
-                    poi_text += 'Sound:' + new_points[i].sound + '<br>';
-                    poi_text += 'Motion:' + new_points[i].motion + '<br>';
-                    poi_text += 'Speed:' + new_points[i].speed + '<br>';
-                    poi_text += 'Time:' + new_points[i].time + '<br>';
-                    poi_text += 'Day:' + new_points[i].day + '<br>';
-                    poi_text += '<br>RealPOIs:<br>';
-                    for (var j = 0; j < new_points[i].poi_types.length; j++) {
-                        poi_text += new_points[i].poi_types[j].title + ":" + new_points[i].poi_types[j].mapping_type + "<br>";
-                    }
-                    //console.log(poi_text);
-                    addClickHandler(poi_text, t_marker);
-                    map.addOverlay(t_marker);
-                }
-                var polyline = new BMap.Polyline(t_point_list, {
-                    strokeColor: "blue",
-                    strokeWeight: 3,
-                    strokeOpacity: 1
-                });   //创建折线
-                map.addOverlay(polyline);   //增加折线
-
-                alert("ok");
             }
         }
     );
@@ -373,6 +389,51 @@ var getRouteData = function (routeResult) {
             postRouteData(routeDatas);
         }
     }
-
 };
+
+function get_recent_traceid() {
+    $.ajax({
+            url: "/trace-ids",
+            data: JSON.stringify({
+                "limit": 15
+            }),
+            type: "POST",
+            contentType: "application/json",
+            success: function (result) {
+                idlist = JSON.parse(result);
+                var tl = $("#tracelist");
+                tl.empty();
+                for (var i = 0; i < idlist.length; i++) {
+                    tl.append('<li>' + idlist[i] + '</li>')
+                }
+            }
+        }
+    );
+}
+
+function get_trace(trace_id) {
+    $.ajax({
+            url: "/trace",
+            data: JSON.stringify({
+                "trace_id": trace_id
+            }),
+            type: "POST",
+            contentType: "application/json",
+            success: function (result) {
+                senz_data = JSON.parse(result);
+                drawpoints(senz_data)
+            },
+            error: function (result) {
+                console.log(result.responseText);
+                var msg = JSON.parse(result.responseText).msg;
+                alert(msg);
+            }
+        }
+    );
+}
+function click_btn_gettrace() {
+    trace_id = $("#trace_id").val();
+    get_trace(trace_id);
+
+}
 
