@@ -14,7 +14,7 @@ def get_context_menus():
                    app_key='h5roibgrbtux2luasq1o9xwr218jebbsyuthv9ho4lced9rv')
     Config = leancloud.Object.extend('Config')
     config_query = leancloud.Query(Config)
-    config_query.equal_to('name', 'events_type')
+    config_query.equal_to('name', 'crf_event_prob_map')
     events_type = config_query.first()
     events = events_type.attributes
     menu = []

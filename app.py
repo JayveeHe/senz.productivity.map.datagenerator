@@ -22,7 +22,7 @@ def handle_data():
     i = 0
     j = 0
     for gps_point in routeDatas:
-        if i % math.ceil(req_count * 0.1) == 0:
+        if i % math.ceil(req_count * 0.05) == 0:
             noise_point = DataGenerator.addGaussNoise(gps_point, 0.0002)
             poi_point = POI_tagger.get_poi_by_point(noise_point)
             feature_point = DataGenerator.generate_feature(poi_point, crf_event_prob_map['value'])

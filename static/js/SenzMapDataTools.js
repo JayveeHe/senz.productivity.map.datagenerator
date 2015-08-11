@@ -5,6 +5,8 @@ endMarker = null;
 waypointMarkers = [];
 pointType = -1;
 
+var isPublicRoute = false;
+
 var seq_context;
 var init_context = function () {
     $.ajax({
@@ -43,7 +45,27 @@ var init_feature = function () {
 init_context();
 init_feature();
 get_recent_traceid();
+//set timestamp
+datepicker = $('#datetimepicker').datetimepicker({todayButton: true, format: "Y/m/d H:i:s"});//中文化});
+$('#datetimepicker').val(new Date().dateFormat("Y/m/d H:i:s"));
+$('#datetimepicker').click(function () {
+    //console.log('123123');
+    //console.log($(this));
+    //console.log($('#datetimepicker').val());
+    var str_date = $('#datetimepicker').val();
+    var dd = new Date(Date.parse(str_date));
 
+    console.log(dd.getTime());
+});
+//$('#timestamp_interval').val(1);
+$('#timestamp_interval').click(function () {
+    console.log($(this).val());
+});
+function getDatepickerVal() {
+    var str_date = $('#datetimepicker').val();
+    var dd = new Date(Date.parse(str_date));
+    return dd.getTime();
+}
 // generate point mode init
 var isPoint = false;
 var genPoints = [];
@@ -95,6 +117,7 @@ $("#btn_start").click(function () {
     pointType = 0;
     genPoints = [];
     isPoint = false;
+    isPublicRoute = false;
     $("#isPointGenerate")[0].checked = false;
 });
 $("#btn_end").click(function () {
@@ -103,6 +126,7 @@ $("#btn_end").click(function () {
     pointType = 1;
     genPoints = [];
     isPoint = false;
+    isPublicRoute = false;
     $("#isPointGenerate")[0].checked = false;
 });
 
@@ -112,12 +136,14 @@ $("#btn_waypoint").click(function () {
     pointType = 2;
     genPoints = [];
     isPoint = false;
+    isPublicRoute = false;
     $("#isPointGenerate")[0].checked = false;
 });
 
 $("#btn_driving_router").click(function () {
     genPoints = [];
     isPoint = false;
+    isPublicRoute = false;
     $("#isPointGenerate")[0].checked = false;
     makeDrivingRoute(map);
 });
@@ -125,8 +151,17 @@ $("#btn_driving_router").click(function () {
 $("#btn_walking_router").click(function () {
     genPoints = [];
     isPoint = false;
+    isPublicRoute = false;
     $("#isPointGenerate")[0].checked = false;
     makeWalkingRoute(map);
+});
+
+$("#btn_transit_router").click(function () {
+    genPoints = [];
+    isPoint = false;
+    $("#isPointGenerate")[0].checked = false;
+    isPublicRoute = true;
+    makeTransitRoute(map);
 });
 
 $("#btn_reset").click(function () {
@@ -139,6 +174,7 @@ $("#btn_reset").click(function () {
     genPoints = [];
     $("#isPointGenerate")[0].checked = false;
     isPoint = false;
+    isPublicRoute = false;
 });
 
 $("#btn_getdata").click(function () {
@@ -249,6 +285,24 @@ var makeWalkingRoute = function (renderMap) {
     transit.search(startMarker.getPosition(), endMarker.getPosition());
 };
 
+var makeTransitRoute = function (renderMap) {
+    renderMap.clearOverlays();
+    var transit = new BMap.TransitRoute(renderMap, {
+        renderOptions: {
+            map: renderMap,
+            //panel: "r-result",
+            enableDragging: true //起终点可进行拖拽
+        }
+    });
+    transit.setSearchCompleteCallback(function () {
+        mapResult = transit.getResults();
+        console.log('方案总数：' + transit.getResults().getNumPlans());
+        console.log('公交路段数:' + transit.getResults().getPlan(0).getNumLines());
+        console.log('步行路段数:' + transit.getResults().getPlan(0).getNumRoutes());
+    });
+    transit.search(startMarker.getPosition(), endMarker.getPosition());
+};
+
 //data collector
 //draw points
 function drawpoints(result) {
@@ -257,8 +311,8 @@ function drawpoints(result) {
         var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
         var opts = {
             width: 250,     // 信息窗口宽度
-            height: 400,     // 信息窗口高度
-            title: "信息窗口", // 信息窗口标题
+            height: 500,     // 信息窗口高度
+            title: "数据点信息", // 信息窗口标题
             enableMessage: true//设置允许信息窗发送短息
         };
         var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象
@@ -280,7 +334,9 @@ function drawpoints(result) {
         var t_point = new BMap.Point(new_points[i].lng, new_points[i].lat);
         t_point_list.push(t_point);
         var t_marker = new BMap.Marker(t_point);
-        var poi_text = "GPS:<br>lng=" + new_points[i].lng + "<br>lat=" + new_points[i].lat + "<br>";
+        var poi_text = "lng=" + new_points[i].lng + "<br>lat=" + new_points[i].lat + "<br>";
+        poi_text += 'Timestamp:' + new_points[i].timestamp + '<br>';
+        poi_text += 'Datetime:' + new Date(parseInt(new_points[i].timestamp)) + '<br>';
         poi_text += '<br>Context:' + new_points[i].context + '<br>';
         poi_text += 'Location:' + new_points[i].location + '<br>';
         poi_text += 'Sound:' + new_points[i].sound + '<br>';
@@ -303,7 +359,7 @@ function drawpoints(result) {
     });   //创建折线
     map.addOverlay(polyline);   //增加折线
     alert("ok");
-    map.centerAndZoom(new BMap.Point(t_point_list[0].lng,t_point_list[0].lat), 12);
+    map.centerAndZoom(new BMap.Point(t_point_list[0].lng, t_point_list[0].lat), 12);
 }
 
 
@@ -334,6 +390,10 @@ var getRouteData = function (routeResult) {
     //isPoint = $("#isPointGenerate")[0].checked;
     console.log(isPoint);
     pointType = -1;
+    var start_timestamp = getDatepickerVal();
+    var timestamp_interval = parseInt($('#timestamp_interval').val()) * 1000;
+    console.log('start:\t' + start_timestamp);
+    console.log('interval:\t' + timestamp_interval);
     if (isPoint) {
         if (genPoints.length > 0) {
             var routeDatas = [];
@@ -344,7 +404,8 @@ var getRouteData = function (routeResult) {
                     "time": $("#select-time").val(),
                     "index": i,
                     "lng": genPoints[i].lng,
-                    "lat": genPoints[i].lat
+                    "lat": genPoints[i].lat,
+                    "timestamp": start_timestamp + i * timestamp_interval
                 });
             }
             console.log(routeDatas);
@@ -364,26 +425,53 @@ var getRouteData = function (routeResult) {
             alert("请先设定一个出行计划！");
         } else {
             var t = 0;
-            //console.log(routeResult);
+            var line_count = 0;
+            var point_count = 0;
+            console.log(routeResult);
             var route = routeResult.getPlan(0).getRoute(0);
             var routePath = routeResult.getPlan(0).getRoute(0).getPath();
             var routeDatas = [];
             do {
+
                 routePath = route.getPath();
-                //console.log(routePath);
+                console.log(routePath);
                 for (var i = 0; i < routePath.length; i++) {
                     routeDatas.push({
                         "context": $("#select-context").val(),
                         "day": $("#select-day").val(),
                         "time": $("#select-time").val(),
-                        "index": i,
+                        "index": point_count,
                         "lng": routePath[i].lng,
-                        "lat": routePath[i].lat
+                        "lat": routePath[i].lat,
+                        "timestamp": start_timestamp + point_count * timestamp_interval
                     });
+                    point_count++;
                 }
+                //console.log('isPublicRoute=' + isPublicRoute);
+                //console.log('current line nums = ' + routeResult.getPlan(0).getNumLines());
+                if (isPublicRoute && line_count < routeResult.getPlan(0).getNumLines()) {
+                    var routeLine = routeResult.getPlan(0).getLine(line_count).getPath();
+                    console.log('current line = ' + routeLine);
+                    console.log('current line len='+routeLine.length);
+                    for (var j = 0; j < routeLine.length; j++) {
+                        routeDatas.push({
+                            "context": $("#select-context").val(),
+                            "day": $("#select-day").val(),
+                            "time": $("#select-time").val(),
+                            "index": point_count,
+                            "lng": routeLine[j].lng,
+                            "lat": routeLine[j].lat,
+                            "timestamp": start_timestamp + point_count * timestamp_interval
+                        });
+                        point_count++;
+                    }
+                    line_count++;
+                }
+
                 t++;
                 route = routeResult.getPlan(0).getRoute(t);
             } while (route != null);
+            isPublicRoute = false;
             //}
             //console.log("t=======" + t);
             postRouteData(routeDatas);
