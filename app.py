@@ -1,6 +1,8 @@
 import json
 import os
 from flask import Flask, request, render_template, make_response
+from flask.ext.cors import cross_origin
+
 import math
 import sys
 from Utils import POI_tagger, LeancloudUtils, DataGenerator
@@ -12,6 +14,7 @@ crf_event_prob_map = LeancloudUtils.get_crf_event_probmap()
 
 
 @app.route('/data', methods=['POST'])
+@cross_origin()
 def handle_data():
     req_data = json.loads(request.data)
     result = []
@@ -34,20 +37,28 @@ def handle_data():
     objid = 'null'
     if isSaved:
         objid = LeancloudUtils.save_to_leancloud(result)
-    return json.dumps({'trace_id': objid, 'result': result})
+    resp = make_response(json.dumps({'trace_id': objid, 'result': result}), 200)
+    # resp.headers['Access-Control-Allow-Origin'] = '*'
+    resp.headers["Access-Control-Allow-Headers"] = "content-type"
+    return resp
 
 
 @app.route('/context', methods=['GET'])
 def get_context_menu():
-    return json.dumps(LeancloudUtils.get_context_menus())
+    resp = make_response(json.dumps(LeancloudUtils.get_context_menus()), 200)
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
 
 
 @app.route('/feature', methods=['GET'])
 def get_newfeature():
-    return json.dumps(LeancloudUtils.get_crf_newfeature())
+    resp = make_response(json.dumps(LeancloudUtils.get_crf_newfeature()), 200)
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
 
 
 @app.route('/trace-ids', methods=['POST'])
+@cross_origin()
 def get_recentlist():
     req_data = json.loads(request.data)
     limit = req_data.get('limit')
@@ -58,20 +69,53 @@ def get_recentlist():
     ids = []
     for item in query_result:
         ids.append(item.id)
-    return json.dumps(ids)
+    resp = make_response(json.dumps(ids), 200)
+    # resp.headers['Access-Control-Allow-Origin'] = '*'
+    resp.headers["Access-Control-Allow-Headers"] = "content-type"
+    return resp
 
 
 @app.route('/trace', methods=['POST'])
+@cross_origin()
 def get_single_trace():
     req_data = json.loads(request.data)
     trace_id = req_data['trace_id']
     query_result = LeancloudUtils.get_trace_by_id(trace_id)
     if query_result:
         trace = query_result[0].attributes['senz_data']
-        return json.dumps(trace)
+        resp = make_response(json.dumps(trace), 200)
+        # resp.headers['Access-Control-Allow-Origin'] = '*'
+        resp.headers["Access-Control-Allow-Headers"] = "content-type"
+        return resp
     else:
         resp = make_response(json.dumps({"code": 1, 'msg': 'trace_id not matched!'}), 400)
+        # resp.headers['Access-Control-Allow-Origin'] = '*'
+        resp.headers["Access-Control-Allow-Headers"] = "content-type"
         return resp
+
+
+@app.route('/act_trace/<trace_id>')
+def get_act_trace(trace_id):
+    query_result = LeancloudUtils.get_trace_by_id(trace_id)
+    if query_result:
+        trace = query_result[0].attributes['senz_data']
+        tracelist = []
+        for t in trace:
+            tracelist.append({'timestamp': t['timestamp'],
+                              'location': {
+                                  'latitude': t['lat'],
+                                  'longitude': t['lng']}
+                              })
+        resp = make_response(json.dumps({'trace_list': tracelist, 'code': 0}), 200)
+        # resp.headers['Access-Control-Allow-Origin'] = '*'
+        resp.headers["Access-Control-Allow-Headers"] = "content-type"
+        return resp
+    else:
+        resp = make_response(json.dumps({"code": 1, 'msg': 'trace_id not matched!'}), 400)
+        # resp.headers['Access-Control-Allow-Origin'] = '*'
+        resp.headers["Access-Control-Allow-Headers"] = "content-type"
+        return resp
+    pass
 
 
 @app.route('/', methods=['GET'])
