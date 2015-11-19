@@ -1,6 +1,6 @@
 # coding: utf-8
 
-import os
+import sys
 
 from wsgiref import simple_server
 import leancloud
@@ -13,7 +13,8 @@ from cloud import engine
 from config import config_token
 
 leancloud.init(config_token.LEANCLOUD_APP_ID, config_token.LEANCLOUD_APP_KEY)
-
+reload(sys)
+sys.setdefaultencoding("utf-8")
 application = engine
 
 if __name__ == '__main__':

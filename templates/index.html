@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
@@ -35,6 +35,9 @@
         <button id="btn_transit_router">公交导航</button>
         <button id="btn_reset">重置</button>
         <button id="btn_getdata">获取数据</button>
+        经度: <input id="longitude" type="text" style="width:100px; margin-right:10px;" />
+        纬度: <input id="latitude" type="text" style="width:100px; margin-right:10px;" />
+        <input type="button" value="查询" onclick="theLocation()" />
     </span>
 
     <div>
@@ -71,7 +74,7 @@
                 <span>StartTimestamp设置</span>
 
                 <div>
-                    <input id="datetimepicker" style="width: 95%" type="text">
+                    <input id="datetimepicker" style="width: 95%; float: left" type="text">
                 </div>
                 <span>Timestamp间隔（秒）</span>
 
@@ -79,6 +82,7 @@
                     <input id="timestamp_interval" style="width: 90%" value=1 type="number">
                 </div>
             </div>
+
             <div class="lines_time">
                 <span class="lines_time">模式设置</span>
 
@@ -90,15 +94,16 @@
                 </div>
             </div>
             <div class="lines_time">
-                <span>查询Trace</span>
-
+                <span>查询Trace并写入UserLocation</span>
                 <div>
-                    <input id="trace_id" style="width: 65%;float: left" type="text">
+                    user_id: <input id="set_user_id" placeholder="user_id" style="width: 65%" type="text">
+                    trace_id:<input id="set_trace_id" placeholder="trace_id" style="width: 65%" type="text">
                 </div>
                 <div>
-                    <input id="btn_gettrace" type="button" style="width: 30%;float: right" value="查询">
+                    <input id="btn_gettrace" type="button" value="查询并写入UserLocation">
                 </div>
             </div>
+
             <div class="lines_time">
                 <span>近期Trace</span>
                 <ol id="tracelist">

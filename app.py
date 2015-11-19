@@ -95,6 +95,7 @@ def get_single_trace():
 
 
 @app.route('/act_trace/<trace_id>')
+@cross_origin()
 def get_act_trace(trace_id):
     query_result = LeancloudUtils.get_trace_by_id(trace_id)
     if query_result:

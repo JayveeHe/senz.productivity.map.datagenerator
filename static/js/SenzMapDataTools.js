@@ -185,6 +185,10 @@ $("#btn_gettrace").click(function () {
     click_btn_gettrace();
 });
 
+$('#set_user_location').on('click', function(){
+    click_btn_set_user_location();
+});
+
 // operations part
 
 // point setter
@@ -358,7 +362,7 @@ function drawpoints(result) {
         strokeOpacity: 1
     });   //创建折线
     map.addOverlay(polyline);   //增加折线
-    alert("ok");
+    //alert("ok");
     map.centerAndZoom(new BMap.Point(t_point_list[0].lng, t_point_list[0].lat), 12);
 }
 
@@ -499,29 +503,74 @@ function get_recent_traceid() {
     );
 }
 
-function get_trace(trace_id) {
-    $.ajax({
-            url: "/trace",
-            data: JSON.stringify({
-                "trace_id": trace_id
-            }),
+function set_user_location(user_id, location_obj){
+    var data = {};
+    JSON.parse(location_obj).trace_list.forEach(function(item){
+        data['user_id'] = user_id;
+        data['isMockedData'] = true;
+        data['timestamp'] = item.timestamp;
+        data['location'] = {};
+        data['location']['lng'] = item.location.longitude;
+        data['location']['lat'] = item.location.latitude;
+
+        $.ajax({
             type: "POST",
-            contentType: "application/json",
-            success: function (result) {
-                senz_data = JSON.parse(result);
-                drawpoints(senz_data)
-            },
-            error: function (result) {
-                console.log(result.responseText);
-                var msg = JSON.parse(result.responseText).msg;
-                alert(msg);
+            url: "http://119.254.111.40:3000/api/ForTests",
+            data: data,
+            success: function(rep){
+                console.log(rep);
             }
+        });
+    });
+}
+
+function get_trace(trace_id) {
+    var user_id = $('#set_user_id').val();
+    if(!user_id){
+        alert('请输入UserId!!!');
+        return
+    }
+
+    $.ajax({
+        url: "/trace",
+        data: JSON.stringify({
+            "trace_id": trace_id
+        }),
+        type: "POST",
+        contentType: "application/json",
+        success: function (result) {
+            drawpoints(JSON.parse(result));
+
+            $.get("/act_trace/" + user_id, function(data){
+                set_user_location(user_id, data);
+            });
+        },
+        error: function (result) {
+            console.log(result.responseText);
+            var msg = JSON.parse(result.responseText).msg;
+            alert(msg);
         }
-    );
+    });
 }
+
 function click_btn_gettrace() {
-    trace_id = $("#trace_id").val();
+    var trace_id = $("#set_trace_id").val();
     get_trace(trace_id);
-
 }
 
+
+// 用经纬度设置地图中心点
+function theLocation(){
+    // 百度地图API功能
+	var map = new BMap.Map("allmap");
+	map.centerAndZoom(new BMap.Point(116.331398,39.897445),11);
+	map.enableScrollWheelZoom(true);
+
+    if(document.getElementById("longitude").value != "" && document.getElementById("latitude").value != ""){
+        map.clearOverlays();
+        var new_point = new BMap.Point(document.getElementById("longitude").value,document.getElementById("latitude").value);
+        var marker = new BMap.Marker(new_point);  // 创建标注
+        map.addOverlay(marker);              // 将标注添加到地图中
+        map.panTo(new_point);
+    }
+}
