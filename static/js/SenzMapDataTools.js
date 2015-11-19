@@ -524,7 +524,7 @@ function set_user_location(user_id, location_obj){
 
         $.ajax({
             type: "POST",
-            url: "http://119.254.111.40:3000/api/ForTests",
+            url: "http://119.254.111.40:3000/api/UserLocations",
             data: data,
             success: function(rep){
                 console.log(rep);
