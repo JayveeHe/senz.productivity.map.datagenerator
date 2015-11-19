@@ -49,9 +49,6 @@ get_recent_traceid();
 datepicker = $('#datetimepicker').datetimepicker({todayButton: true, format: "Y/m/d H:i:s"});//中文化});
 $('#datetimepicker').val(new Date().dateFormat("Y/m/d H:i:s"));
 $('#datetimepicker').click(function () {
-    //console.log('123123');
-    //console.log($(this));
-    //console.log($('#datetimepicker').val());
     var str_date = $('#datetimepicker').val();
     var dd = new Date(Date.parse(str_date));
 
@@ -97,6 +94,18 @@ map.addEventListener("click", function (e) {
             break;
     }
 });
+
+
+// 用经纬度设置地图中心点
+function theLocation(){
+    if(document.getElementById("longitude").value != "" && document.getElementById("latitude").value != ""){
+        map.clearOverlays();
+        var new_point = new BMap.Point(document.getElementById("longitude").value,document.getElementById("latitude").value);
+        var marker = new BMap.Marker(new_point);  // 创建标注
+        map.addOverlay(marker);              // 将标注添加到地图中
+        map.panTo(new_point);
+    }
+}
 
 
 $("#isPointGenerate").click(function (e) {
@@ -559,18 +568,3 @@ function click_btn_gettrace() {
 }
 
 
-// 用经纬度设置地图中心点
-function theLocation(){
-    // 百度地图API功能
-	var map = new BMap.Map("allmap");
-	map.centerAndZoom(new BMap.Point(116.331398,39.897445),11);
-	map.enableScrollWheelZoom(true);
-
-    if(document.getElementById("longitude").value != "" && document.getElementById("latitude").value != ""){
-        map.clearOverlays();
-        var new_point = new BMap.Point(document.getElementById("longitude").value,document.getElementById("latitude").value);
-        var marker = new BMap.Marker(new_point);  // 创建标注
-        map.addOverlay(marker);              // 将标注添加到地图中
-        map.panTo(new_point);
-    }
-}
